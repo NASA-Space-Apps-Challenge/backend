@@ -1,15 +1,20 @@
 import express, { Application, Request, Response } from 'express'
 import dotenv from 'dotenv'
+import { createServer } from 'http'
+import { Socket, Server } from 'socket.io'
+
 
 const app: Application = express()
+const httpserver = createServer(app)
+const io = new Server(httpserver)
 
 dotenv.config()
 const port: number = process.env.APP_PORT ? parseInt(process.env.APP_PORT) : 3000
 
-app.get('/toto', (req: Request, res: Response) => {
-    res.send('Hello toto')
+io.on("connection", (socket: Socket) => {
+    console.log("New connection")
 })
 
-app.listen(port, function () {
+httpserver.listen(port, () => {
     console.log(`App is listening on port ${port} !`)
 })
