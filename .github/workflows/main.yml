@@ -16,6 +16,7 @@ jobs:
       - name: Dokku
         uses: dokku/github-action@v1.0.1
         with:
+          git_push_flags: '--force'
           git_remote_url: ${{ secrets.REMOTE_URL }}
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
 
