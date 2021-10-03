@@ -9,7 +9,7 @@ const app: Application = express()
 app.use(cors())
 
 dotenv.config()
-const port: number = process.env.APP_PORT ? parseInt(process.env.APP_PORT) : 3000
+const port: number = process.env.PORT ? parseInt(process.env.PORT) : 3000
 
 app.get("/", async (_req: Request, res: Response) => {
     let data: string = await axios.get("https://celestrak.com/NORAD/elements/active.txt").then(
