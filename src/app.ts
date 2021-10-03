@@ -28,6 +28,9 @@ app.get("/", async (_req: Request, res: Response) => {
     res.send(clean_data)
 })
 
+app.get("/hello", (_req: Request, res: Response) => {
+    res.send("Hello world")
+})
 
 app.listen(port, () => {
     console.log(`App is listening on port ${port} !`)
