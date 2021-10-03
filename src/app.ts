@@ -1,20 +1,31 @@
 import express, { Application, Request, Response } from 'express'
 import dotenv from 'dotenv'
-import { createServer } from 'http'
-import { Socket, Server } from 'socket.io'
+import axios from 'axios';
+
 
 
 const app: Application = express()
-const httpserver = createServer(app)
-const io = new Server(httpserver)
 
 dotenv.config()
 const port: number = process.env.APP_PORT ? parseInt(process.env.APP_PORT) : 3000
 
-io.on("connection", (socket: Socket) => {
-    console.log("New connection")
+app.get("/", async (_req: Request, res: Response) => {
+    let data: string = await axios.get("https://celestrak.com/NORAD/elements/active.txt").then(
+        response => response.data
+    )
+
+    let clean_data = data
+        .split(/\r?\n/)
+        .reduce((r: any[], e, i: number) => (i % 3 ? r[r.length - 1].push(e) : r.push([e])) && r, [])
+        .map(x => {
+            x[0] = x[0].trim()
+            return x
+        })
+    console.info(clean_data[0])
+    res.send(clean_data)
 })
 
-httpserver.listen(port, () => {
+
+app.listen(port, () => {
     console.log(`App is listening on port ${port} !`)
 })
